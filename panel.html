@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+	<style type="text/css">
+	body{
+		background:#6699cc;
+	}
+		
+		#pannel{
+			border:1px solid #6699cc;
+			background-color:#FFFF00;
+
+			position:fixed;
+
+			width:50px;
+			height:50px;
+
+			top:0;
+			left:0;
+
+			border-radius:25px;
+
+			opacity: 0.8;
+
+		}
+	</style>
+
+	<script type="text/javascript">
+
+
+		window.onload=function(){
+
+			var pannel=document.getElementById('pannel');
+
+			//触点x和y坐标
+			var x=0;
+			var y=0;
+
+			//面板left和top值
+			var left_x=0;
+			var left_y=0;
+
+			//判断是点击事件——没有位移
+			var move_x=0;
+			var move_y=0;
+
+			//触摸开始，记录初始化数据
+			pannel.addEventListener('touchstart',function(e){
+				// console.log('start')
+				var finger=e.targetTouches[0];
+
+				//记录触点的x和y坐标
+				x=finger.pageX;
+				y=finger.pageY;
+
+				//面板本来的top和left距离
+				left_x=pannel.offsetLeft;
+				left_y=pannel.offsetTop;
+
+				//位移清零
+				move_x=0;
+				move_y=0;
+			})
+
+			//移动结束判断是否点击事件
+			pannel.addEventListener('touchend',function(e){
+				var sum = Math.abs(move_x) + Math.abs(move_y);
+				if(sum <= 0)
+				{
+					console.log('这是点击事件')
+				}
+			})
+
+			//移动过程中，计算left和top值
+			pannel.addEventListener('touchmove',function(e){
+				// console.log('move')
+				e.preventDefault();// 阻止浏览器默认事件，重要
+				var finger=e.targetTouches[0];
+
+				move_x = finger.pageX - x;
+				move_y = finger.pageY - y;
+
+				pannel.style.left = left_x + move_x +'px';
+				pannel.style.top =  left_y + move_y +'px';
+			})
+
+
+
+
+
+
+		}
+
+	</script>
+</head>
+<body>
+
+
+	<div style="width:100%;height:8200px;">
+			<p>touchstart：触摸开始的时候触发</p>
+			<p>touchmove：手指在屏幕上滑动的时候触发</p>
+			<p>touchend：触摸结束的时候触发</p>
+	</div>
+
+
+<div id='pannel'></div>
+
+
+
+</body>
+</html>
