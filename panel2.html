@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+	<style type="text/css">
+	body{
+		background:#6699cc;
+	}
+		
+		#pannel{
+			border:1px solid #6699cc;
+			background-color:#FFFF00;
+
+			position:fixed;
+
+			width:50px;
+			height:50px;
+
+			top:0;
+			left:0;
+
+			border-radius:25px;
+
+			/*opacity: 0.8;*/
+
+			z-index:88;
+
+		}
+
+		.menu4{
+			display:none;
+			position:absolute;
+
+			width:160px;
+			height:600px;
+			border:1px solid red;
+			left:25px;
+			top:25px;
+			z-index:87;
+		}
+		.menu1{
+			display:none;
+			position:absolute;
+
+			width:160px;
+			height:600px;
+			border:1px solid red;
+			left:25px;
+			bottom:25px;
+			z-index:87;
+		}
+
+
+
+		.menu2{
+			display:none;
+			position:absolute;
+
+			width:160px;
+			height:600px;
+			border:1px solid red;
+			bottom:25px;
+			right:25px;
+			z-index:87;
+		}
+
+
+		.menu3{
+			display:none;
+			position:absolute;
+
+			width:160px;
+			height:600px;
+			border:1px solid red;
+			right:25px;
+			top:25px;
+			z-index:87;
+		}
+	</style>
+
+	<script type="text/javascript">
+
+
+		window.onload=function(){
+
+			var pannel=document.getElementById('pannel');
+
+			//触点x和y坐标
+			var x=0;
+			var y=0;
+
+			//面板left和top值
+			var left_x=0;
+			var left_y=0;
+
+			//判断是点击事件——没有位移
+			var move_x=0;
+			var move_y=0;
+
+
+// 屏幕宽高
+var width= document.documentElement.clientWidth;
+var height= document.documentElement.clientHeight;
+
+//菜单
+var child=pannel.childNodes;
+
+// console.log(height)
+
+/*不在园内*/
+function notInCycle(x,y,_x,_y){
+	// return false;
+	if(x>=_x && (x<=_x+50) && y>=_y && (y<=_y+50) ){
+		return false;//在圆圈内
+	}else{
+		return true;//超出圆圈
+	}
+
+}
+
+			//触摸开始，记录初始化数据
+			pannel.addEventListener('touchstart',function(e){
+				// console.log('start')
+				var finger=e.targetTouches[0];
+
+				//记录触点的x和y坐标
+				x=finger.clientX;
+				y=finger.clientY;
+
+				//面板本来的top和left距离
+				left_x=pannel.offsetLeft;
+				left_y=pannel.offsetTop;
+/*
+	if(notInCycle(x,y,left_x,left_y))
+	{
+		return;
+	}*/
+
+				//位移清零
+				move_x=0;
+				move_y=0;
+
+			})
+
+			//移动结束判断是否点击事件
+			pannel.addEventListener('touchend',function(e){
+
+
+
+
+
+
+	// var finger=e.targetTouches[0];
+	//我只要判断点击事件就可以了，其他不用管
+	if(notInCycle(x,y,left_x,left_y))
+	{
+		return;
+	}
+
+
+				var sum = Math.abs(move_x) + Math.abs(move_y);
+				if(sum <= 0)
+				{
+					console.log('这是点击事件')
+				}
+			})
+
+
+
+
+
+
+			//移动过程中，计算left和top值
+			pannel.addEventListener('touchmove',function(e){
+ 
+
+
+				// console.log('move')
+				e.preventDefault();// 阻止浏览器默认事件，重要
+				var finger=e.targetTouches[0];
+
+
+for(var i=0;i<4;i++){
+	child[i].style.display='none';
+}
+console.log('一次')
+console.log(finger.clientY,height);
+//象限判断
+//1,4象限
+if(finger.clientX-width/2>0){
+	//4
+	if(finger.clientY-height/2>0){
+		child[1].style.display='block';
+
+	//1
+	}else{
+		child[2].style.display='block';
+
+	}
+//2,3象限
+}else{
+	//3
+	if(finger.clientY-height/2>0){
+		child[0].style.display='block';
+
+	//2
+	}else{
+		child[3].style.display='block';
+
+	}
+}
+
+
+
+
+/*	if(notInCycle(finger.clientX,finger.clientY,left_x,left_y))
+	{
+		return;
+	}*/
+				move_x = finger.clientX - x;
+				move_y = finger.clientY - y;
+
+				pannel.style.left = left_x + move_x +'px';
+				pannel.style.top =  left_y + move_y +'px';
+			})
+
+
+
+/*			for(var i=0;i<4;i++)
+			{
+				child[i].addEventListener('touchend',function(e){return false;})
+				child[i].addEventListener('touchstart',function(e){return false;})
+				child[i].addEventListener('touchmove',function(e){return false;})	
+			}
+
+			// console.log(child[0])
+/*
+			for(var i in child){
+				child[i].style.display='block';
+			}
+*/
+
+
+		}
+
+	</script>
+</head>
+<body>
+
+
+	<div style="width:100%;height:8200px;">
+			<p>touchstart：触摸开始的时候触发</p>
+			<p>touchmove：手指在屏幕上滑动的时候触发</p>
+			<p>touchend：触摸结束的时候触发</p>
+	</div>
+
+
+<div id='pannel'><div class='menu1'></div><div class='menu2'></div><div class='menu3'></div><div class='menu4'></div></div>
+
+
+
+</body>
+</html>
