@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		
+.x_ball{
+    border:1px solid red;
+
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    /*transition: all 0.35s linear;*/
+}
+.y_ball{
+	display:none;
+
+    border:1px solid blue;
+    width: 30px;
+    height: 30px;
+    background: #6699cc;
+    border-radius: 50%;
+    /*transition: all 0.35s cubic-bezier(0.39,-0.4,0.83,0.23);*/
+    position: absolute;
+}
+
+	</style>
+</head>
+<body>
+
+
+
+
+	<div id="ball">
+		<!-- x轴动画 -->
+		<div chencai='0' class='x_ball'>
+			<!-- y轴动画 -->
+			<div class='y_ball'></div>
+		</div>
+		<!-- x轴动画 -->
+		<div chencai='1' class='x_ball'>
+			<!-- y轴动画 -->
+			<div class='y_ball'></div>
+		</div>
+		<!-- x轴动画 -->
+		<div chencai='2' class='x_ball'>
+			<!-- y轴动画 -->
+			<div class='y_ball'></div>
+		</div>
+		<!-- x轴动画 -->
+		<div class='x_ball'>
+			<!-- y轴动画 -->
+			<div class='y_ball'></div>
+		</div>
+		<!-- x轴动画 -->
+		<div class='x_ball'>
+			<!-- y轴动画 -->
+			<div class='y_ball'></div>
+		</div>
+		<!-- x轴动画 -->
+		<div class='x_ball'>
+			<!-- y轴动画 -->
+			<div class='y_ball'></div>
+		</div>
+		<!-- x轴动画 -->
+		<div class='x_ball'>
+			<!-- y轴动画 -->
+			<div class='y_ball'></div>
+		</div>
+
+	</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+var ball=document.getElementById('ball');
+
+
+
+var all_ball=[];
+
+
+//记录点击次数
+var dianji=0;
+
+window.addEventListener('click', function (event) {
+
+	// 当点击次数超过小球个数时回0
+	if(dianji>6)
+	{
+		dianji=0;
+	}
+
+        //1将小球移动到鼠标点击位置并显示
+			//点击的坐标
+	        var left_x = event.offsetX;
+	        var top_y  = event.offsetY;
+
+
+	        let len = all_ball.length;
+
+	        console.log('++'+len+'--'+new Date());
+
+			x_ball=ball.getElementsByClassName('x_ball')[dianji];
+			y_ball=x_ball.getElementsByClassName('y_ball')[0];
+
+        all_ball.unshift(x_ball);
+        // all_ball.unshift(y_ball);
+
+
+
+	        x_ball.style.left = left_x + 'px';
+	        x_ball.style.top = top_y + 'px';
+
+	        y_ball.style.display='block'
+	 
+
+        // 2计算鼠标位置到购物车的移动距离[translate]
+        var leftDifference = -(left_x - 10);
+        var topDifference = -(top_y - 450);
+
+		//3设置x和y的运动动画
+        setTimeout(function () {
+        	//x动画
+        	x_ball.style.transition='transform 0.8s linear';
+			x_ball.style.transform = `translateX(${leftDifference}px)`;
+
+
+			// y动画
+			y_ball.style.transition='transform 0.8s cubic-bezier(0.39,-0.4,0.83,0.23)';
+			y_ball.style.transform = `translateY(${topDifference}px)`;
+
+        }, 1);
+
+        //4.将小球复位
+        setTimeout(function(){
+
+	        let out=all_ball.pop();
+	        console.log('--'+all_ball.length+'--'+new Date());
+
+
+        	out.setAttribute('style', '');
+        	out.getElementsByClassName('y_ball')[0].setAttribute('style', '');//y_ball
+
+        },1000);
+
+// 将点击次数+1
+	dianji++;
+
+});
+</script>
